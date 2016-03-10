@@ -51,7 +51,7 @@ namespace Kafka.Client.Tests.Producers
             pool.Setup(p => p.GetShuffledProducers()).Returns(() => new List<ISyncProducer>() { producer.Object });
             pool.Setup(p => p.GetProducer(It.IsAny<int>())).Returns(() => producer.Object);
             var mockPartitionInfo = new Mock<IBrokerPartitionInfo>();
-            mockPartitionInfo.Setup(m => m.GetBrokerPartitionInfo(0, string.Empty, It.IsAny<int>(), "test"))
+            mockPartitionInfo.Setup(m => m.GetBrokerPartitionInfo(0, " ", It.IsAny<int>(), "test"))
                              .Returns(() =>
                              {
                                  var partition = new Partition("test", 0);
@@ -93,7 +93,7 @@ namespace Kafka.Client.Tests.Producers
             pool.Setup(p => p.GetShuffledProducers()).Returns(() => new List<ISyncProducer>() { producer.Object });
             pool.Setup(p => p.GetProducer(It.IsAny<int>())).Returns(() => producer.Object);
             var mockPartitionInfo = new Mock<IBrokerPartitionInfo>();
-            mockPartitionInfo.Setup(m => m.GetBrokerPartitionInfo(0, string.Empty, It.IsAny<int>(), "test"))
+            mockPartitionInfo.Setup(m => m.GetBrokerPartitionInfo(0, " ", It.IsAny<int>(), "test"))
                              .Returns(() => new List<Partition>());
             var handler = new DefaultCallbackHandler<string, Message>(config, partitioner.Object, new DefaultEncoder(), mockPartitionInfo.Object, pool.Object);
             try
@@ -105,7 +105,7 @@ namespace Kafka.Client.Tests.Producers
             }
             catch (FailedToSendMessageException<string>)
             {
-                mockPartitionInfo.Verify(m => m.GetBrokerPartitionInfo(0, string.Empty, It.IsAny<int>(), "test"), Times.Exactly(3));
+                mockPartitionInfo.Verify(m => m.GetBrokerPartitionInfo(0, " ", It.IsAny<int>(), "test"), Times.Exactly(3));
                 return;
             }
 
